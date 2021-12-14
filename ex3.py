@@ -40,9 +40,9 @@ def softmax(arr):
 
 def train():
     global w1, w2, b1, b2
-    ETA, EPOCHS = 0.01, 10
+    ETA, EPOCHS = 0.01, 20
     for i in range(EPOCHS):
-        print(f'Running epoch {i}/{EPOCHS}')
+        print(f'Running epoch {i+1}/{EPOCHS}')
         s = np.random.permutation(train_size)
         train_set = zip(train_x[s], train_y[s])
         for x, y in train_set:
@@ -56,6 +56,7 @@ def train():
 
 
 def test():
+    print("Testing . . .")
     for x in test_x:
         _, h2 = fprop(x.reshape((784, 1)))
         test_y.append(np.argmax(h2))
@@ -63,10 +64,10 @@ def test():
 
 print('loading train x file')
 train_x = np.genfromtxt(argv[1]) / 255
-print('loading test x file')
-test_x = np.genfromtxt(argv[2])/255
 print('loading train y file')
-train_y, test_y = np.genfromtxt(argv[3]).astype(int), []
+train_y, test_y = np.genfromtxt(argv[2]).astype(int), []
+print('loading test x file')
+test_x = np.genfromtxt(argv[3])/255
 train_size, test_size = train_x.shape[0], test_x.shape[0]
 w1, w2 = np.random.rand(128, 784), np.random.rand(10, 128)
 b1, b2, z1, z2 = np.random.rand(128, 1), np.random.rand(10, 1), 0, 0
