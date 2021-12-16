@@ -26,8 +26,7 @@ def bprop(x, y, h1, h2):
     y_hat = np.zeros((10, 1))
     y_hat[y] = 1
     dz2 = h2 - y_hat
-    dw2 = np.dot(dz2, h1.T)
-    dz1 = np.dot(w2.T, dz2)*sigmoid(z1)*(1-sigmoid(z1))
+    dw2, dz1 = np.dot(dz2, h1.T), np.dot(w2.T, dz2)*sigmoid(z1)*(1-sigmoid(z1))
     dw1 = np.dot(dz1, x.T)
     return dw1, dz1, dw2, dz2
 
@@ -56,17 +55,13 @@ def train():
 
 
 def test():
-    print("Testing . . .")
     for x in test_x:
         _, h2 = fprop(x.reshape((784, 1)))
         test_y.append(np.argmax(h2))
 
 
-print('loading train x file')
 train_x = np.genfromtxt(argv[1]) / 255
-print('loading train y file')
 train_y, test_y = np.genfromtxt(argv[2]).astype(int), []
-print('loading test x file')
 test_x = np.genfromtxt(argv[3])/255
 train_size, test_size = train_x.shape[0], test_x.shape[0]
 w1, w2 = np.random.rand(128, 784), np.random.rand(10, 128)
